@@ -1,0 +1,47 @@
+###############################################################################
+##
+##    Typemap for Image::OpenCV objects
+##
+##    Copyright (c) Hironao OOTSUBO
+##    All rights reserved.
+##
+##    This typemap is designed specifically to make it easier to handle
+##    Perl-style blessed objects in XS.  In particular, it takes care of
+##    blessing the object into the correct class (even for derived classes).
+##
+##
+###############################################################################
+## vi:et:sw=4 ts=4
+
+TYPEMAP
+
+IplImage * T_IV
+
+# TODO
+const char ** T_IV
+
+CvMemStorage * T_IV
+
+const CvArr * T_IV
+
+CvHaarClassifierCascade * T_IV
+
+CvSize T_CV_SIZE
+
+CvSeq * T_CV_SEQ
+
+INPUT
+T_CV_SIZE
+    HV * ${var}_hv = (HV *)SvRV($arg);
+    CvSize $var = cvSize(SvIV(*hv_fetch(${var}_hv, \"width\", 5, 0)), SvIV(*hv_fetch(${var}_hv, \"height\", 6, 0)));
+
+OUTPUT
+T_CV_SEQ
+    AV * av = newAV();
+    int i;
+    for (i = 0; i < $var ? $var->total : 0; i++) {
+        CvRect * r = (CvRect *)cvGetSeqElem(faces, i);
+        HV * h = newHV();
+        hv_store(h, \"x\", 1, newIV(r->x), 0);
+        av_push(av, h);
+    }

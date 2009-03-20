@@ -1,0 +1,9 @@
+*.bs
+*.o
+.*
+META.yml
+Makefile
+Makefile.old
+OpenCV.c
+blib
+pm_to_blib
