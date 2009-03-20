@@ -13,7 +13,7 @@ can_cc or die 'This module requires a C compiler';
 
 requires_external_bin 'pkg-config';
 
-build_requires 'Test::More';
+test_requires 'Test::More';
 auto_include;
 WriteAll;
 
